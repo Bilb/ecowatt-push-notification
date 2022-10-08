@@ -11,16 +11,32 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()  # loads the configs from .env
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-^ezmh(*@xb=nm)w#f(+l@6wh%1knu$yw4apsgu*p96#(h*ogol"
+SECRET_KEY = os.getenv('SECRET_KEY')
+ECOWATT_CLIENT_ID = os.getenv('ECOWATT_CLIENT_ID')
+ECOWATT_CLIENT_SECRET = os.getenv('ECOWATT_CLIENT_SECRET')
+
+
+# Android/Firebase environment variables
+FIREBASE_KEY_PATH = os.getenv('FIREBASE_KEY_PATH')
+
+
+# iOS/APNS environment variables
+APNS_CERT_PATH = os.getenv('APNS_CERT_PATH')
+APNS_AUTH_KEY_PATH = os.getenv('APNS_AUTH_KEY_PATH')
+APNS_AUTH_KEY_ID = os.getenv('APNS_AUTH_KEY_ID')
+APNS_TEAM_ID = os.getenv('APNS_TEAM_ID')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +47,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "pn.apps.PNConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -121,3 +138,18 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
